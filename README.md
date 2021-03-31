@@ -28,7 +28,7 @@ For each custom radio, add this line in `fxmanifest.lua`:
 supersede_radio "[ORIGINAL_RADIO_NAME]" { url = "[RADIO URL]", volume = 0.5, name = "[NEW RADIO NAME]" }
 ```
 
-You can find the list of radio names in [`data.js`](radio/data.js) and a full example in [`__resource.lua`](radio/__resource.lua).
+You can find the list of radio names in [`data.js`](radio/data.js) and a full example in [`fxmanifest.lua`](radio/fxmanifest.lua).
 
 ## Tips
 
