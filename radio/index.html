@@ -1,6 +1,6 @@
 <html>
 <head>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.1.2/howler.core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.16/mediaelement.min.js"></script>
     <script>
         let customRadios;
 
@@ -24,22 +24,21 @@
              */
             play: function (index) {
                 let self = this;
-                let sound;
 
                 index = index !== -1 ? index : self.index;
                 let station = self.stations[index];
 
                 // If we already loaded this track, use the current one.
-                // Otherwise, setup and load a new Howl.
-                if (station.howl) {
-                    sound = station.howl;
+                // Otherwise, setup and load a new MediaElement.
+                if (station.mediaElement) {
+                    sound = station.mediaElement;
                 } else {
-                    sound = station.howl = new Howl({
-                        src: station.data.url,
-                        html5: true, // A live stream can only be played through HTML5 Audio.
-                        format: ['opus', 'ogg', 'mp3'],
-                        volume: (station.data.volume || 1.0) * self.volume || 0.1
-                    });
+                    var audio = document.createElement("audio");
+                    audio.id = "audio";
+                    audio.src = station.data.url;
+                    document.body.appendChild(audio);
+
+                    sound = station.mediaElement = new MediaElement(audio.id);
                 }
 
                 // Begin playing the sound.
@@ -55,15 +54,14 @@
             stop: function () {
                 let self = this;
 
-                // Get the Howl we want to manipulate.
-                let sound = self.stations[self.index].howl;
+                // Get the MediaElement we want to manipulate.
+                let sound = self.stations[self.index].mediaElement;
 
                 // Stop and unload the sound.
-                if (sound && sound.state() !== "unloaded") {
-                    sound.unload();
-                } else if (sound) {
-                    sound.stop();
-                }
+		if (sound) {
+			sound.pause();
+			sound.remove();
+		}
             },
 
             /**
@@ -76,15 +74,15 @@
                 self.volume = volume;
 
                 for (let i = 0, length = self.stations.length; i < length; i++) {
-                    if (self.stations[i].howl) {
-                        self.stations[i].howl.volume((self.stations[i].data.volume || 1.0) * volume);
+                    if (self.stations[i].mediaElement) {
+                        self.stations[i].mediaElement.volume = (self.stations[i].data.volume || 1.0) * volume;
                     }
                 }
             }
         };
 
         document.addEventListener("DOMContentLoaded", () => {
-            fetch("http://radio/radio:ready", { "method": "POST", "body": "{}" });
+            fetch("https://radio/radio:ready", { "method": "POST", "body": "{}" });
 
             window.addEventListener("message", (event) => {
                 let item = event.data;
@@ -103,14 +101,14 @@
                             let index = customRadios.stations.findIndex((radio) => {
                                 return radio.name === item.radio;
                             });
-                            let isNotPlaying = (customRadios.stations[index].howl && !customRadios.stations[index].howl.playing());
+                            let isNotPlaying = (customRadios.stations[index].mediaElement && customRadios.stations[index].mediaElement.paused);
 
                             // If the station isn't already playing or it doesn't exist, play it.
-                            if (isNotPlaying || !customRadios.stations[index].howl) {
+                            if (isNotPlaying || !customRadios.stations[index].mediaElement) {
                                 customRadios.play(index);
                             }
                         } else {
-                            fetch("http://radio/radio:ready", { "method": "POST", "body": "{}" });
+                            fetch("https://radio/radio:ready", { "method": "POST", "body": "{}" });
                         }
                         break;
                     case "stop":

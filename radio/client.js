@@ -36,7 +36,6 @@ on("__cfx_nui:radio:ready", (data, cb) => {
     SendNuiMessage(JSON.stringify({ "type": "create", "radios": customRadios, "volume": volume }));
     previousVolume = -1;
 });
-SendNuiMessage(JSON.stringify({ "type": "create", "radios": customRadios, "volume": volume }));
 
 const PlayCustomRadio = (radio) => {
     isPlaying = true;
