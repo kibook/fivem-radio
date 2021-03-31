@@ -23,7 +23,7 @@ Video showing Los Santos Rock Radio replaced by a WebRadio and Non-Stop-Pop FM r
 
 ## Configuration
 
-For each custom radio, add this line in `_resource.lua`:
+For each custom radio, add this line in `fxmanifest.lua`:
 ```lua
 supersede_radio "[ORIGINAL_RADIO_NAME]" { url = "[RADIO URL]", volume = 0.5, name = "[NEW RADIO NAME]" }
 ```
