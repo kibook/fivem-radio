@@ -36,6 +36,7 @@
                     var audio = document.createElement("audio");
                     audio.id = "audio";
                     audio.src = station.data.url;
+                    audio.volume = (station.data.volume || 1.0) * self.volume || 0.1;
                     document.body.appendChild(audio);
 
                     sound = station.mediaElement = new MediaElement(audio.id);
@@ -58,10 +59,10 @@
                 let sound = self.stations[self.index].mediaElement;
 
                 // Stop and unload the sound.
-		if (sound) {
-			sound.pause();
-			sound.remove();
-		}
+                if (sound) {
+                        sound.pause();
+                        sound.remove();
+                }
             },
 
             /**
