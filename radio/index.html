@@ -4,6 +4,12 @@
     <script>
         let customRadios;
 
+        function uuid() {
+            return '00-0-4-1-000'.replace(/[^-]/g,
+                s => ((Math.random() + ~~s) * 0x10000 >> s).toString(16).padStart(4, '0')
+            );
+        }
+
         /**
          * Radio class containing the state of our stations.
          * Includes all methods for playing, stopping, etc.
@@ -34,7 +40,7 @@
                     sound = station.mediaElement;
                 } else {
                     var audio = document.createElement("audio");
-                    audio.id = "audio";
+                    audio.id = uuid();
                     audio.src = station.data.url;
                     audio.volume = (station.data.volume || 1.0) * self.volume || 0.1;
                     document.body.appendChild(audio);
@@ -55,11 +61,14 @@
             stop: function () {
                 let self = this;
 
+                let station = self.stations[self.index];
+
                 // Get the MediaElement we want to manipulate.
-                let sound = self.stations[self.index].mediaElement;
+                let sound = station.mediaElement;
 
                 // Stop and unload the sound.
                 if (sound) {
+                        station.mediaElement = null;
                         sound.pause();
                         sound.remove();
                 }
