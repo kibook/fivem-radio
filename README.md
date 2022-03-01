@@ -1,6 +1,6 @@
 # FiveM Radio 📻
 
-This resource allows you to integrate your own desired radios in place of the original radios within up to the 2545 gamebuild.
+This resource allows you to integrate your own desired radios in place of the original radios within FiveM, up to the 2545 gamebuild.
 
 It is fully written in JavaScript and uses resource metadata for its configuration.
 
