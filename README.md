@@ -55,6 +55,12 @@ Use OpenIV or Codewalker RPF Explorer, search for hud.ytd, export the textures a
 
 Create a stream folder within this resource and place modified hud.ytd within.
 
+After each gamebuild update, you may find that the positions of the radio stations have changed, therefore you will need to update your HUD.ytd.
+
+I would suggest keeping backups in folders, with the gamebuild number as the name, for easy finding if and when you wish to upgrade or downgrade your gamebuild for any reasons.
+
+You can find some amazing coloured radio wheels and weapon wheels over at GTA5Mods
+
 ----------
 
 ## License 📜
